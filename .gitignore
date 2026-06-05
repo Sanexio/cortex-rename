@@ -1,0 +1,30 @@
+# Lokale Arbeitsverzeichnisse — NIEMALS committen
+# (enthalten echte Praxis-Dokumente, oft mit Patient-Bezug → DSGVO)
+IN/
+OUT/
+
+# Tenant-spezifische Vendor- und Korrektur-Listen (gitignored,
+# damit Tenant-Forks ihre konkreten Praxis-Listen sicher halten)
+rules/VENDOR_PATTERNS_TENANT.md
+rules/OCR_CORRECTIONS_TENANT.md
+rules/FEHLERPROTOKOLL_TENANT.md
+
+# OS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.orig
+*.bak
+
+# Python (für eigene Engine-Anbindungen, falls Tenant Python nutzt)
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# Logs
+*.log
