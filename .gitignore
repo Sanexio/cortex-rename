@@ -30,3 +30,6 @@ venv/
 *.log
 *.pyo
 .tmp/
+
+# Demo-Ausgaben
+examples/rename-demo/out/

@@ -79,3 +79,33 @@ Sanexio garantiert nicht, dass die eigene Engine in jeder Praxis-
 Umgebung lauffähig ist — das ist Teil des Tenant-Vertrags. Wer auf
 sich selbst gestellt eine Engine bauen will, hat hier die normative
 Spec — das genügt für eine eigene robuste Implementierung.
+
+## Lizenz-Flow (Sanexio-Engine)
+
+Die Sanexio-Engine prüft beim Start die lokale Lizenzdatei
+`~/.cortex/license.json`. Diese Datei wird durch
+`cortex init --license <token>` angelegt und enthält den Tenant-Token für
+die Engine-Freischaltung.
+
+Beim Start revalidiert die Engine den Token gegen:
+
+```text
+POST https://cortex.sanexio.de/api/v1/license/verify
+```
+
+Die Antwort enthält mindestens `valid` und `reason`. `valid=true`
+schaltet den Lauf frei. Bei `valid=false` entscheidet `reason` über die
+Fehlerklasse, z.B. `revoked`, `expired` oder `unknown_token`.
+
+Erfolgreiche Validierungen dürfen für 24 Stunden lokal gecacht werden.
+Wenn der Lizenzserver offline ist und der Cache noch gültig ist, darf die
+Engine weiterlaufen. Ist der Cache abgelaufen, gilt fail-closed.
+
+Exit-Codes:
+
+| Code | Bedeutung |
+|---:|---|
+| 0 | Lizenz ok |
+| 4 | Keine lokale Lizenz vorhanden |
+| 5 | Lizenz abgelehnt (`revoked`, `expired`, `unknown_token`) |
+| 6 | Offline und Lizenz-Cache abgelaufen |
